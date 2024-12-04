@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <center>
+        <form>
+            <label>
+                Peso
+                <input id="iptPeso" type="number"/>
+            </label>
+            <label>
+                Altura
+                <input id="iptAltura"/>
+            </label>
+            <button id="btnSubmit">Calcular</button>
+        </form>
+    </center>
+</body>
+</html>
+
+<script>
+
+    btnSubmit.addEventListener("click", (ev) => {
+        ev.preventDefault();
+        calcularIMC();
+    })
+
+    
+
+    function calcularIMC() {
+        const peso = Number(iptPeso.value);
+        const altura = Number(iptAltura.value);
+
+        (async () => {
+            const rawResponse = await fetch("http://localhost:3000/imc/calcular", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    peso,
+                    altura,
+                })
+            });
+            const content = await rawResponse.json();
+            alert(`Seu IMC de ${content.imc} está na condição de ${content.descricao}`)
+        })();
+    }
+</script>
+
+<style>
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 200px;
+    }
+</style>
